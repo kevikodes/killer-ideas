@@ -29,9 +29,24 @@ const CategorySelection = () => {
         <option value='Take it or double it and give it to the next person'>
           Take it or double it and give it to the next person
         </option>
-        <option value='Speed Drawing'>Speed Drawing</option>
-        <option value='Q&A'>Q&amp;A</option>
-        <option value='Unboxing'>Unboxing</option>
+        <option value='1 vs 100'>1 vs 100</option>
+        <option value='I tried ____ for 30 days'>
+          I tried ____ for 30 days
+        </option>
+        <option value='How ______ Makes _____ a year'>
+          How ______ Makes _____ a year
+        </option>
+        <option value='I let ________ control my life for 24 hours'>
+          I let ________ control my life for 24 hours
+        </option>
+        <option value='$1 vs $1,000'>$1 vs $1,000</option>
+        <option value='I survived 50 hours doing ______'>
+          I survived 50 hours doing ______
+        </option>
+        <option value='__________ in real life'>__________ in real life</option>
+        <option value='__________ in __________'>
+          __________ in __________
+        </option>
       </select>
       <button
         onClick={handleStartGameClick}

@@ -8,6 +8,7 @@ import GameHeader from '@/components/GameHeader'
 import GameForm from '@/components/GameForm'
 import IdeaList from '@/components/IdeaList'
 import GameCategory from '@/components/GameCategory'
+import io from 'socket.io-client'
 
 const whoosh = new Howl({
   src: ['../assets/sounds/whoosh.mp3'],
@@ -30,6 +31,7 @@ const GamePage = () => {
 
   const inputRef = useRef(null)
   const ideasContainerRef = useRef(null)
+  const socketRef = useRef()
 
   useEffect(() => {
     intervalId = setInterval(() => {
@@ -48,7 +50,7 @@ const GamePage = () => {
     if (timeLeft === 0) {
       clearInterval(intervalId)
       setConfettiActive(false)
-      router.push(`/gameover?score=${score}`)
+      // router.push(`/gameover?score=${score}`)
     }
   }, [timeLeft])
 
@@ -66,14 +68,34 @@ const GamePage = () => {
     }
   }, [router.query])
 
+  useEffect(() => {
+    // Connect to the server using Socket.io
+    socketRef.current = io()
+
+    // Listen for incoming ideas from the server
+    socketRef.current.on('idea', idea => {
+      setIdeas(prevIdeas => {
+        const newIdeas = [...prevIdeas, idea]
+        return newIdeas
+      })
+    })
+
+    return () => {
+      // Disconnect from the server when the component unmounts
+      socketRef.current.disconnect()
+    }
+  }, [])
+
   const handleFormSubmit = async event => {
     event.preventDefault()
     const idea = event.target.elements.idea.value
     handleShowPlusTen()
-    setIdeas(prevIdeas => {
-      const newIdeas = [...prevIdeas, idea]
-      return newIdeas
-    })
+
+    console.log('Submitting idea:', idea)
+
+    // Send the new idea to the server
+    socketRef.current.emit('idea', idea)
+
     setScore(prevScore => prevScore + 10)
     setTimeLeft(prevTimeLeft => prevTimeLeft + 3)
     mouseClick.play()
