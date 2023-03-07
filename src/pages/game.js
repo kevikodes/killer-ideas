@@ -20,9 +20,10 @@ const mouseClick = new Howl({
 const GamePage = () => {
   const [ideas, setIdeas] = useState([])
   const [score, setScore] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(30)
+  const [timeLeft, setTimeLeft] = useState(60)
   const [confettiActive, setConfettiActive] = useState(false)
   const [category, setCategory] = useState('')
+  const [addedIdeas, setAddedIdeas] = useState(0)
   const router = useRouter()
   let intervalId
 
@@ -69,7 +70,9 @@ const GamePage = () => {
     const idea = event.target.elements.idea.value
     setIdeas(prevIdeas => [...prevIdeas, idea])
     setScore(prevScore => prevScore + 10)
-    setTimeLeft(30)
+    setAddedIdeas(prevAddedIdeas => prevAddedIdeas + 1)
+    const newTimeLeft = timeLeft + (addedIdeas % 2 === 0 ? 3 : 0)
+    setTimeLeft(newTimeLeft > 0 ? newTimeLeft + 2 : 0)
     setConfettiActive(true)
     mouseClick.play()
     whoosh.play()
