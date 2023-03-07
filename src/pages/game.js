@@ -48,7 +48,7 @@ const GamePage = () => {
     if (timeLeft === 0) {
       clearInterval(intervalId)
       setConfettiActive(false)
-      router.push(`/gameover?score=${score}`)
+      // router.push(`/gameover?score=${score}`)
     }
   }, [timeLeft])
 
