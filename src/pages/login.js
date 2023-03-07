@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import styles from '../styles/AuthPage.module.css'
 import { signInWithEmailAndPassword } from '../utils/firebase'
+import { auth } from '../utils/firebase'
+import { useRouter } from 'next/router'
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -9,18 +11,16 @@ const AuthPage = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleFormSubmit = event => {
-    event.preventDefault()
+  const router = useRouter()
 
-    signInWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        // Handle successful login
-        console.log('User signed in:', userCredential.user)
-      })
-      .catch(error => {
-        // Handle error
-        console.error('Login error:', error.message)
-      })
+  const handleFormSubmit = async event => {
+    event.preventDefault()
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+      router.push('/')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

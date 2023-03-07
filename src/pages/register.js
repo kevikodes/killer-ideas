@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import styles from '../styles/AuthPage.module.css'
 import { auth, createUserWithEmailAndPassword, db } from '../utils/firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from 'next/router'
+
 import { doc, addDoc, getDoc, collection } from 'firebase/firestore'
 const RegisterPage = () => {
   const [email, setEmail] = useState('')
@@ -10,9 +13,10 @@ const RegisterPage = () => {
   const [error, setError] = useState('')
   const [displayName, setDisplayName] = useState('')
 
+  const router = useRouter()
+
   const handleFormSubmit = async event => {
     event.preventDefault()
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -20,12 +24,12 @@ const RegisterPage = () => {
         password,
       )
       const user = userCredential.user
-
-      await updateProfile(user, {
-        displayName: displayName,
-      })
-
-      console.log('User profile updated successfully')
+      user.displayName = displayName
+      console.log(user.displayName, '🔥')
+      // Log the user in
+      await signInWithEmailAndPassword(auth, email, password)
+      // Route to home page
+      router.push('/')
     } catch (error) {
       setError(error.message)
     }
