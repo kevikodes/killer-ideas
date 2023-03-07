@@ -24,6 +24,7 @@ const GamePage = () => {
   const [confettiActive, setConfettiActive] = useState(false)
   const [category, setCategory] = useState('')
   const [addedIdeas, setAddedIdeas] = useState(0)
+  const [showPlusTen, setShowPlusTen] = useState(false)
   const router = useRouter()
   let intervalId
 
@@ -68,17 +69,27 @@ const GamePage = () => {
   const handleFormSubmit = async event => {
     event.preventDefault()
     const idea = event.target.elements.idea.value
-    setIdeas(prevIdeas => [...prevIdeas, idea])
+    handleShowPlusTen()
+    setIdeas(prevIdeas => {
+      const newIdeas = [...prevIdeas, idea]
+      return newIdeas
+    })
     setScore(prevScore => prevScore + 10)
-    setAddedIdeas(prevAddedIdeas => prevAddedIdeas + 1)
-    const newTimeLeft = timeLeft + (addedIdeas % 2 === 0 ? 3 : 0)
-    setTimeLeft(newTimeLeft > 0 ? newTimeLeft + 2 : 0)
-    setConfettiActive(true)
+    setTimeLeft(prevTimeLeft => prevTimeLeft + 3)
     mouseClick.play()
     whoosh.play()
-    setTimeout(() => setConfettiActive(false), 3000)
+    setTimeout(() => {
+      setShowPlusTen(false)
+    }, 1500)
     event.target.reset()
     inputRef.current.focus()
+    setConfettiActive(true)
+    setTimeout(() => setConfettiActive(false), 2000)
+    setShowPlusTen(true)
+  }
+
+  const handleShowPlusTen = () => {
+    setShowPlusTen(true)
   }
 
   return (
@@ -88,6 +99,7 @@ const GamePage = () => {
       <GameCategory category={category} />
       <GameForm inputRef={inputRef} handleFormSubmit={handleFormSubmit} />
       <IdeaList ideasContainerRef={ideasContainerRef} ideas={ideas} />
+      {showPlusTen && <div className={styles['plus-ten-message']}>+10</div>}
     </div>
   )
 }
