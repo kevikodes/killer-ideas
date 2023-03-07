@@ -97,7 +97,7 @@ const GamePage = () => {
     socketRef.current.emit('idea', idea)
 
     setScore(prevScore => prevScore + 10)
-    setTimeLeft(prevTimeLeft => prevTimeLeft + 3)
+    setTimeLeft(prevTimeLeft => prevTimeLeft + 15)
     mouseClick.play()
     whoosh.play()
     setTimeout(() => {
