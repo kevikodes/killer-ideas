@@ -14,7 +14,7 @@ const whoosh = new Howl({
 })
 
 const mouseClick = new Howl({
-  src: ['../assets/sounds/mouseClick.wav'],
+  src: ['../assets/sounds/mouseClick.mp3'],
 })
 
 const GamePage = () => {
