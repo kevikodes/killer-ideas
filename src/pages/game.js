@@ -13,6 +13,10 @@ const whoosh = new Howl({
   src: ['../assets/sounds/whoosh.mp3'],
 })
 
+const mouseClick = new Howl({
+  src: ['../assets/sounds/mouseClick.wav'],
+})
+
 const GamePage = () => {
   const [ideas, setIdeas] = useState([])
   const [score, setScore] = useState(0)
@@ -67,6 +71,7 @@ const GamePage = () => {
     setScore(prevScore => prevScore + 10)
     setTimeLeft(30)
     setConfettiActive(true)
+    mouseClick.play()
     whoosh.play()
     setTimeout(() => setConfettiActive(false), 3000)
     event.target.reset()
