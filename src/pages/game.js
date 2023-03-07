@@ -14,7 +14,7 @@ const whoosh = new Howl({
 })
 
 const mouseClick = new Howl({
-  src: ['../assets/sounds/mouseClick.mp3'],
+  src: ['../assets/sounds/mouseclick.mp3'],
 })
 
 const GamePage = () => {
@@ -64,7 +64,7 @@ const GamePage = () => {
     }
   }, [router.query])
 
-  const handleFormSubmit = event => {
+  const handleFormSubmit = async event => {
     event.preventDefault()
     const idea = event.target.elements.idea.value
     setIdeas(prevIdeas => [...prevIdeas, idea])
