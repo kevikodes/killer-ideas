@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import styles from '../styles/AuthPage.module.css'
 import { auth, createUserWithEmailAndPassword, db } from '../utils/firebase'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 import { doc, addDoc, getDoc, collection } from 'firebase/firestore'
 const RegisterPage = () => {
@@ -14,6 +15,14 @@ const RegisterPage = () => {
   const [displayName, setDisplayName] = useState('')
 
   const router = useRouter()
+
+  useEffect(() => {
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        router.replace('/')
+      }
+    })
+  }, [])
 
   const handleFormSubmit = async event => {
     event.preventDefault()

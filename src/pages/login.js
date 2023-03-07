@@ -1,18 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import styles from '../styles/AuthPage.module.css'
 import { signInWithEmailAndPassword } from '../utils/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../utils/firebase'
 import { useRouter } from 'next/router'
 
 const AuthPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLogin, setIsLogin] = useState(true)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
 
   const router = useRouter()
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      if (user) {
+        setIsAuthenticated(true)
+        router.push('/')
+      } else {
+        setIsAuthenticated(false)
+        setIsLoading(false)
+      }
+    })
+
+    return unsubscribe
+  }, [])
   const handleFormSubmit = async event => {
     event.preventDefault()
     try {
@@ -23,6 +40,7 @@ const AuthPage = () => {
     }
   }
 
+  if (isAuthenticated) return
   return (
     <div className={styles.authPageContainer}>
       <div className={styles.authPageHeader}>
