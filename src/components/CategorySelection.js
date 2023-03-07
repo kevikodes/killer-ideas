@@ -47,6 +47,12 @@ const CategorySelection = () => {
         <option value='__________ in __________'>
           __________ in __________
         </option>
+        <option value='I asked ______ how to ______'>
+          I asked ______ how to ______
+        </option>
+        <option value='I trained like _____ for 24 hours'>
+          I trained like _____ for 24 hours
+        </option>
       </select>
       <button
         onClick={handleStartGameClick}
