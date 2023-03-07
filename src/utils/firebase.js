@@ -24,6 +24,8 @@ const app = initializeApp(firebaseConfig)
 // Get an instance of the authentication service
 const auth = getAuth(app)
 
+setPersistence(auth, 'local')
+
 // Get an instance of the Firestore service
 const db = getFirestore(app)
 
